@@ -63,7 +63,7 @@ Game.init = function (options) {
   this.isMobile = isMobile();
 
   // 资源路径
-  this.asset.setPath(options.publicPath);
+  this.asset.setPath(options.path);
 
   autoResizeCanvas(this);
   listenInputEvent(this);

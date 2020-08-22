@@ -2,12 +2,13 @@
  * 资源系统，用于操作图像音频等资源
  */
 export default function asset() {
-  // 图片路径
-  let publicPath = "";
+  // 资源路径
+  let imagePath = "";
+  let audioPath = "";
 
   // promise集合
   let loadings = [];
-  
+
   // 资源集合
   let assets = {};
 
@@ -53,7 +54,7 @@ export default function asset() {
             resolve(true);
           }
         }))
-        image.src = publicPath + url;
+        image.src = imagePath + url;
         return;
       }
 
@@ -70,12 +71,12 @@ export default function asset() {
             resolve(true);
           }
         }));
-        image.src = publicPath + url;
+        image.src = imagePath + url;
         return;
       }
 
       if (type === 'audio') {
-        assets[group][name] = new Audio(publicPath + url);
+        assets[group][name] = new Audio(audioPath + url);
       }
     },
     /**
@@ -84,7 +85,8 @@ export default function asset() {
      */
     setPath(path) {
       if (!path) return;
-      publicPath = path;
+      imagePath = path.image || "";
+      audioPath = path.audio || "";
     }
   }
 }

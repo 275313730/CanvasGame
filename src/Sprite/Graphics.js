@@ -9,6 +9,8 @@ export default function graphics(sprite) {
    */
   let executor = null;
 
+  let isSameSize = false;
+
   /**
    * 设置尺寸
    * @param {number} width 宽度
@@ -31,15 +33,15 @@ export default function graphics(sprite) {
    */
   function getData() {
     return {
-      relX: sprite.relX,
-      relY: sprite.relY,
-      offsetLeft: sprite.offsetLeft,
-      offsetTop: sprite.offsetTop,
+      relX: sprite.relX * Game.scale,
+      relY: sprite.relY * Game.scale,
+      offsetLeft: sprite.offsetLeft * Game.scale,
+      offsetTop: sprite.offsetTop * Game.scale,
       width: sprite.width,
       height: sprite.height,
       drawWidth: sprite.drawWidth,
       drawHeight: sprite.drawHeight,
-      scale: sprite.scale,
+      scale: sprite.scale * Game.scale,
       flip: sprite.flip
     };
   }
@@ -48,8 +50,12 @@ export default function graphics(sprite) {
    * 绘制图片
    * @param {Image} image 图片
    */
-  function drawImage(image) {
-    var { relX, relY, offsetLeft, offsetTop, width, drawWidth, drawHeight, scale, flip } = getData();
+  function drawImage(image, sameSize) {
+    let { relX, relY, offsetLeft, offsetTop, width, drawWidth, drawHeight, scale, flip } = getData();
+    if (sameSize) {
+      sprite.width = drawWidth * scale;
+      sprite.height = drawHeight * scale;
+    };
     if (!flip) {
       var tranlateX = floor(relX + offsetLeft);
       var tranlateY = floor(relY + offsetTop);
@@ -108,7 +114,7 @@ export default function graphics(sprite) {
    */
   function test() {
     ctx.strokeStyle = 'red';
-    ctx.strokeRect(sprite.relX, sprite.relY, sprite.width, sprite.height);
+    ctx.strokeRect(sprite.relX * Game.scale, sprite.relY * Game.scale, sprite.width * Game.scale, sprite.height * Game.scale);
   }
 
   return {
@@ -197,12 +203,10 @@ export default function graphics(sprite) {
     image(group, name, sameSize = false) {
       // 获取图片数据
       let image = Game.asset.get(group, name);
-
-      setSize(image.width, image.height, sameSize);
-
+      setSize(image.width, image.height, sameSize)
       // 绘制函数
       executor = function () {
-        drawImage(image);
+        drawImage(image, sameSize);
       }
     },
     /**
