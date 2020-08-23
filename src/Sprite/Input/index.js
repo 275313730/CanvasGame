@@ -1,4 +1,4 @@
-import Game from '../Game/index'
+import Game from '../../Game/index'
 
 export default function input(sprite) {
   let inputEvents = Game.inputEvents;

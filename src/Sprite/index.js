@@ -1,9 +1,9 @@
 "use strict"
 import Game from "../Game/index.js";
-import graphics from "./Graphics.js";
-import audio from "./Audio.js";
+import graphics from "./Graphics/index.js";
+import audio from "./Audio/index.js";
 import event from "../Common/Event.js";
-import input from "./Input.js";
+import input from "./Input/index.js";
 
 /**
  * 精灵构造函数

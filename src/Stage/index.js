@@ -1,9 +1,9 @@
 "use strict"
 import Game from "../Game/index.js";
-import sprite from "./Sprite.js";
-import camera from "./Camera.js";
+import sprite from "./Sprite/index.js";
+import camera from "./Camera/index.js";
 import event from "../Common/Event.js";
-import geometry from "./Geometry.js";
+import geometry from "./Geometry/index.js";
 
 /**
  * 场景构造函数

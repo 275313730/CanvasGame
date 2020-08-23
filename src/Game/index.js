@@ -1,6 +1,6 @@
 "use strict"
-import asset from "./Asset.js";
-import { listenInputEvent, autoResizeCanvas, isMobile, initStyle } from './Utils.js'
+import asset from "./Asset/index.js";
+import { listenInputEvent, autoResizeCanvas, isMobile, initStyle } from './utils.js'
 import event from "../Common/Event.js";
 
 const Game = {};
@@ -38,7 +38,7 @@ Game.init = function (options) {
   // canvas黑色背景
   this.canvas.style.backgroundColor = "black";
 
-  // 缩放
+  // 缩放(影响精灵绘制尺寸)
   this.scale = this.viewHeight / this.height;
 
   // 键盘状态

@@ -1,14 +1,15 @@
 export default function geometry() {
-  function getData(unit1, unit2) {
-    const { x: x1, y: y1, width: w1, height: h1 } = unit1;
-    const { x: x2, y: y2, width: w2, height: h2 } = unit2;
-
+  function getData(sprite1, sprite2) {
+    let { x: x1, y: y1, width: w1, height: h1, scale: s1 } = sprite1;
+    x1 *= s1; y1 *= s1; w1 *= s1; h1 *= s1;
+    let { x: x2, y: y2, width: w2, height: h2, scale: s2 } = sprite2;
+    x2 *= s2; y2 *= s2; w2 *= s2; h2 *= s2;
     return { x1, y1, w1, h1, x2, y2, w2, h2 };
   }
   return {
     // 在上面
-    above(unit1, unit2) {
-      const { x1, y1, w1, h1, x2, y2, w2 } = getData(unit1, unit2);
+    above(sprite1, sprite2) {
+      const { x1, y1, w1, h1, x2, y2, w2 } = getData(sprite1, sprite2);
 
       if (y1 + h1 <= y2 && x1 + w1 >= x2 && x1 <= x2 + w2) {
         return true;
@@ -16,8 +17,8 @@ export default function geometry() {
       return false;
     },
     // 包含
-    contain(unit1, unit2) {
-      const { x1, y1, w1, h1, x2, y2, w2, h2 } = getData(unit1, unit2);
+    contain(sprite1, sprite2) {
+      const { x1, y1, w1, h1, x2, y2, w2, h2 } = getData(sprite1, sprite2);
 
       if (w1 < w2 && h1 < h2 &&
         (x1 <= x2 || x1 + w1 >= x2 + w2) &&
@@ -27,8 +28,8 @@ export default function geometry() {
       return true;
     },
     // 距离()
-    distance(type, unit1, unit2) {
-      const { x1, y1, w1, h1, x2, y2, w2, h2 } = getData(unit1, unit2);
+    distance(type, sprite1, sprite2) {
+      const { x1, y1, w1, h1, x2, y2, w2, h2 } = getData(sprite1, sprite2);
       // 纵向距离
       if (type === 'y') {
         if (y2 > y1 + h1) {
@@ -57,8 +58,8 @@ export default function geometry() {
       }
     },
     // 相交
-    intersect(unit1, unit2) {
-      const { x1, y1, w1, h1, x2, y2, w2, h2 } = getData(unit1, unit2);
+    intersect(sprite1, sprite2) {
+      const { x1, y1, w1, h1, x2, y2, w2, h2 } = getData(sprite1, sprite2);
 
       if (x1 >= x2 + w2 ||
         x1 + w1 <= x2 ||
@@ -69,8 +70,8 @@ export default function geometry() {
       return true;
     },
     // 在右边
-    onRight(unit1, unit2) {
-      const { x1, y1, h1, x2, y2, w2, h2 } = getData(unit1, unit2);
+    onRight(sprite1, sprite2) {
+      const { x1, y1, h1, x2, y2, w2, h2 } = getData(sprite1, sprite2);
 
       if (x1 >= x2 + w2 && y1 + h1 >= y2 && y1 <= y2 + h2) {
         return true;
@@ -78,8 +79,8 @@ export default function geometry() {
       return false;
     },
     // 在左边
-    onLeft(unit1, unit2) {
-      const { x1, y1, w1, h1, x2, y2, h2 } = getData(unit1, unit2);
+    onLeft(sprite1, sprite2) {
+      const { x1, y1, w1, h1, x2, y2, h2 } = getData(sprite1, sprite2);
 
       if (x1 + w1 <= x2 && y1 + h1 >= y2 && y1 <= y2 + h2) {
         return true;
@@ -87,8 +88,8 @@ export default function geometry() {
       return false;
     },
     // 相切
-    tangent(unit1, unit2) {
-      const { x1, y1, w1, h1, x2, y2, w2, h2 } = getData(unit1, unit2);
+    tangent(sprite1, sprite2) {
+      const { x1, y1, w1, h1, x2, y2, w2, h2 } = getData(sprite1, sprite2);
 
       if (x1 > x2 + w2 ||
         x1 + w1 < x2 ||
@@ -99,8 +100,8 @@ export default function geometry() {
       return true;
     },
     // 在下面
-    under(unit1, unit2) {
-      const { x1, y1, w1, x2, y2, w2, h2 } = getData(unit1, unit2);
+    under(sprite1, sprite2) {
+      const { x1, y1, w1, x2, y2, w2, h2 } = getData(sprite1, sprite2);
 
       if (y1 >= y2 + h2 && x1 + w1 >= x2 && x1 <= x2 + w2) {
         return true;

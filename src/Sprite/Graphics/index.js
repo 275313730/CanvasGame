@@ -1,4 +1,5 @@
-import Game from "../Game/index.js"
+import Game from "../../Game/index.js"
+import utils from './utils.js'
 
 export default function graphics(sprite) {
   const ctx = Game.canvas.getContext('2d');
@@ -9,49 +10,14 @@ export default function graphics(sprite) {
    */
   let executor = null;
 
-  let isSameSize = false;
-
-  /**
-   * 设置尺寸
-   * @param {number} width 宽度
-   * @param {number} height 高度
-   * @param {boolean} sameSize 是否与图片相同尺寸
-   */
-  function setSize(width, height, sameSize) {
-    // 设置单位绘制尺寸
-    sprite.drawWidth = width;
-    sprite.drawHeight = height;
-
-    if (sameSize) {
-      sprite.width = width;
-      sprite.height = height;
-    }
-  }
-
-  /**
-   * 获取精灵数据
-   */
-  function getData() {
-    return {
-      relX: sprite.relX * Game.scale,
-      relY: sprite.relY * Game.scale,
-      offsetLeft: sprite.offsetLeft * Game.scale,
-      offsetTop: sprite.offsetTop * Game.scale,
-      width: sprite.width * sprite.scale * Game.scale,
-      height: sprite.height * sprite.scale * Game.scale,
-      drawWidth: sprite.drawWidth,
-      drawHeight: sprite.drawHeight,
-      scale: sprite.scale * Game.scale,
-      flip: sprite.flip
-    };
-  }
+  const { getSpriteData, setSize } = utils(sprite);
 
   /**
    * 绘制图片
    * @param {Image} image 图片
    */
   function drawImage(image) {
-    let { relX, relY, offsetLeft, offsetTop, width, drawWidth, drawHeight, scale, flip } = getData();
+    let { relX, relY, offsetLeft, offsetTop, width, drawWidth, drawHeight, scale, flip } = getSpriteData(sprite);
     if (!flip) {
       var tranlateX = floor(relX + offsetLeft);
       var tranlateY = floor(relY + offsetTop);
@@ -74,7 +40,7 @@ export default function graphics(sprite) {
    * @param {boolean} imageFlip 是否翻转
    */
   function drawAnimation(image, currFrame, imageFlip) {
-    var { relX, relY, offsetLeft, offsetTop, width, drawWidth, drawHeight, scale, flip } = getData();
+    var { relX, relY, offsetLeft, offsetTop, width, drawWidth, drawHeight, scale, flip } = getSpriteData(sprite);
 
     // 图片方向
     if (!imageFlip && !flip || imageFlip && flip) {
@@ -109,7 +75,7 @@ export default function graphics(sprite) {
    * 测试开启时调用
    */
   function test() {
-    let { relX, relY, width, height } = getData();
+    let { relX, relY, width, height } = getSpriteData(sprite);
 
     ctx.strokeStyle = 'red';
     ctx.strokeRect(relX, relY, width, height);
@@ -127,6 +93,7 @@ export default function graphics(sprite) {
       let anim = Game.asset.get(group, name);
 
       setSize(anim.image.width / anim.frame, anim.image.height, sameSize);
+
       // 动画属性
       let options = {
         // 动画帧数
@@ -201,7 +168,6 @@ export default function graphics(sprite) {
     image(group, name, sameSize = false) {
       // 获取图片数据
       let image = Game.asset.get(group, name);
-      isSameSize = sameSize;
       setSize(image.width, image.height, sameSize);
       // 绘制函数
       executor = function () {
